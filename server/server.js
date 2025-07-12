@@ -23,5 +23,6 @@ app.get('/',(req,res)=>{
 app.use("/api/inngest", serve
     ({ client: inngest, functions }));
 
-// app.listen(port,()=> console.log(`server is running on ${port}`))
+app.listen(port,()=> console.log(`server is running on ${port}`))
 
+// export default app;
