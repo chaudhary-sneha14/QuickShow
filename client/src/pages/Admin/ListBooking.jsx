@@ -3,6 +3,8 @@ import { dummyBookingData } from '../../assets/assets';
 import Loading from '../../Component/Loading';
 import Title from './Title';
 import { dateFormat } from '../../lib/dateFormat';
+import { useAppContext } from '../../Context/AppContext';
+import toast from 'react-hot-toast';
 
 const ListBooking = () => {
 
@@ -10,12 +12,31 @@ const ListBooking = () => {
         const [loading, setLoading] = useState(true)
         const[booking,setBookings]=useState([[]]);
 
+          const{axios,getToken,user,image_base_url}=useAppContext()
+        
+
         const getAllBookings=async()=>{
-            setBookings(dummyBookingData)
-            setLoading(false)
+          try {
+      const {data}= await axios.get("/api/admin/all-bookings",{headers:{Authorization:`Bearer ${await getToken()}`}})
+      console.log(data);
+      
+      if(data.success){
+       setBookings(data.booking)
+        setLoading(false)
+      }
+      else{
+        toast.error(data.message)
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error("error in fetching dashboarddata",error)
+      
+    }
         }
 
-        useEffect(()=>{getAllBookings()},[])
+        useEffect(()=>{
+            if(user){getAllBookings()}},
+            [user])
   return !loading? (
    
    <>

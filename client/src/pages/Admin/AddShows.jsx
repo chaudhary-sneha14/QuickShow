@@ -1,12 +1,15 @@
 import React, { useEffect, useState } from 'react'
 import Title from './Title'
-import { dummyShowsData } from '../../assets/assets'
 import Loading from '../../Component/Loading'
 import { CheckIcon, DeleteIcon, StarIcon } from 'lucide-react'
 import { kConverter } from '../../lib/kConvertor'
+import { useAppContext } from '../../Context/AppContext'
+import toast from 'react-hot-toast'
 
 const AddShows = () => {
   const currency = import.meta.env.VITE_CURRENCY
+
+  const {axios,getToken,user,image_base_url}=useAppContext()
 
   const [loading, setLoading] = useState(true)
   const [nowPlayingMovies, setNowPlayingMovies] = useState([])
@@ -14,9 +17,21 @@ const AddShows = () => {
   const [dateTimeSelection, setDateTimeSelection] = useState({})
   const [dateTimeInput, setDateTimeInput] = useState("")
   const [showPrice, setShowPrice] = useState("")
+  const[addingShow,setAddingShow]=useState(false)
 
+  
   const fetchNowPlayingMovies = async () => {
-    setNowPlayingMovies(dummyShowsData)
+   try {
+    const{data}=await axios.get('/api/show/now-playing',{
+      headers:{Authorization:`Bearer ${await getToken()}`}
+    })
+     if(data.success){
+        setNowPlayingMovies(data.movies)
+      }
+   } catch (error) {
+    console.log(error);
+    
+   }
     setLoading(false)
   }
 
@@ -49,9 +64,50 @@ const AddShows = () => {
         })
   }
 
+  const handleSubmit=async()=>{
+   
+    try {
+      setAddingShow(true)
+
+      if(!selectedMovies || Object.keys(dateTimeSelection).length===0||!showPrice){
+       return toast("Missing required field")
+      }
+
+    const showInput = Object.entries(dateTimeSelection).map(([date,times]) => (
+  { date, time:times }
+))
+
+
+      const payload={
+        movieId:selectedMovies,
+        showInput,
+        showPrice:Number(showPrice)
+      }
+
+      const {data}=await axios.post('/api/show/add',payload,{headers:{Authorization:`Bearer ${await getToken()}`}})
+
+      if(data.success){
+        toast.success(data.message)
+        setSelectedMovies(null)
+        setDateTimeSelection({})
+        setShowPrice("")
+      }
+      else{
+        toast.error(data.message)
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error("Please Try Again")
+      
+    }
+    setAddingShow(false)
+  }
+
   useEffect(() => {
+    if(user){
     fetchNowPlayingMovies()
-  }, [])
+    }
+  }, [user])
 
   return nowPlayingMovies.length > 0 ? (
     <>
@@ -61,23 +117,18 @@ const AddShows = () => {
       <div className="mt-4 flex flex-wrap gap-4">
         {nowPlayingMovies.map((movie) => (
           <div
-            key={movie._id}
-            onClick={() => setSelectedMovies(movie._id)}
+            key={movie.id}
+            onClick={() => setSelectedMovies(movie.id)}
             className="flex flex-col justify-between bg-primary/10 rounded-2xl hover:-translate-y-1 transition duration-300 w-56 cursor-pointer"
           >
             {/* Image with Check Icon */}
             <div className="relative w-full">
               <img
-                src={movie.poster_path}
+                src={image_base_url + movie.poster_path}
+                // onClick={setSelectedMovies(movie._id)}
                 alt={movie.title}
                 className="w-full h-52 rounded-t-2xl object-cover object-center"
               />
-
-              {selectedMovies === movie._id && (
-                <div className="absolute top-2 right-2 flex items-center justify-center bg-primary h-6 w-6 rounded">
-                  <CheckIcon className="w-4 h-4 text-white" strokeWidth={2.5} />
-                </div>
-              )}
             </div>
 
             {/* Title & Release Date */}
@@ -94,7 +145,13 @@ const AddShows = () => {
               </div>
               <span className="text-gray-400">{kConverter(movie.vote_count)} votes</span>
             </div>
-          </div>
+         
+                      {selectedMovies === movie.id && (
+                <div className="absolute top-2 right-2 flex items-center justify-center bg-primary h-6 w-6 rounded">
+                  <CheckIcon className="w-4 h-4 text-white" strokeWidth={2.5} />
+                </div>
+              )}
+               </div>
         ))}
       </div>
 
@@ -148,8 +205,8 @@ const AddShows = () => {
         )
       }
 
-       <button className='px-10 py-3 text-sm mt-10 bg-primary hover:bg-primary-dull transition
-            rounded-md font-medium cursor-pointer active:scale-95'>Show More</button>
+       <button onClick={handleSubmit} disabled={addingShow} className='px-10 py-3 text-sm mt-10 bg-primary hover:bg-primary-dull transition
+            rounded-md font-medium cursor-pointer active:scale-95'>Add Show</button>
     </>
   ) : (
     <Loading />

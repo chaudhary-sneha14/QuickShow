@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { assets } from '../assets/assets'
 import { MenuIcon, SearchIcon, TicketPlus, XIcon } from 'lucide-react'
 import { useClerk, UserButton, useUser } from '@clerk/clerk-react'
+import { useAppContext } from '../Context/AppContext'
 
 const Navbar = () => {
 
@@ -11,6 +12,8 @@ const Navbar = () => {
   const {openSignIn}=useClerk()  //it help in creating login authentication it open sign in page when click on login and signup if no account
   const navigate=useNavigate();
 
+  const{favoriteMovies}= useAppContext()
+   
 
   return (
     <div className='fixed top-0 left-0 z-50 w-full flex item-center justify-between px-6 md:px-16 lg:px-36 py-5'>
@@ -29,8 +32,7 @@ const Navbar = () => {
         <Link onClick={()=>{scrollTo(0,0);setIsOpen(false)}} to='/movies'>Movies</Link>
         <Link onClick={()=>{scrollTo(0,0);setIsOpen(false)}} to='/'>Theaters</Link>
         <Link onClick={()=>{scrollTo(0,0);setIsOpen(false)}} to='/'>Releases</Link>
-        <Link onClick={()=>{scrollTo(0,0);setIsOpen(false)}} to='/favorite'>Favorites</Link>
-
+       { favoriteMovies.length>0 &&<Link onClick={()=>{scrollTo(0,0);setIsOpen(false)}} to='/favorite'>Favorites</Link>}
       </div>
 
       <div className='flex items-center gap-8'>
@@ -43,7 +45,7 @@ const Navbar = () => {
           ):(
             <UserButton> {/**it display login account profile */}
               <UserButton.MenuItems> {/**it add additional menu My booking */}
-                <UserButton.Action onClick={()=>navigate('/my-booking')} label='My Bookings' labelIcon={<TicketPlus width={15}/>}/> {/**ticketplus is icon display using luicier */}
+                <UserButton.Action onClick={()=>navigate('/my-bookings')} label='My Bookings' labelIcon={<TicketPlus width={15}/>}/> {/**ticketplus is icon display using luicier */}
               </UserButton.MenuItems>
               
                </UserButton> /** if user login */

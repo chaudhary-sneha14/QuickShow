@@ -11,9 +11,15 @@ import { dummyBookingData, dummyDashboardData } from '../../assets/assets'
 import Title from './Title'
 import BlurCircle from '../../Component/BlurCircle'
 import timeFormat from '../../lib/timeFormat'
+import { useAppContext } from '../../Context/AppContext'
+import toast from 'react-hot-toast'
+
+
 
 const Dashboard = () => {
   const currency = import.meta.env.VITE_CURRENCY
+
+  const{axios,getToken,user,image_base_url}=useAppContext()
 
   const [dashboardData, setDashboardData] = useState({
     totalBookings: 0,
@@ -48,13 +54,26 @@ const Dashboard = () => {
   ]
 
   const fetchDashboardData =async()=>{
-    setDashboardData(dummyDashboardData)  
-    setLoading(false)
+    try {
+      const {data}= await axios.get("/api/admin/dashboard",{headers:{Authorization:`Bearer ${await getToken()}`}})
+      if(data.success){
+        setDashboardData(data.dashboardData)
+        setLoading(false)
+      }
+      else{
+        toast.error(data.message)
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error("error in fetching dashboarddata",error)
+      
+    }
   };
 
   useEffect(()=>{
-    fetchDashboardData()
-  },[])
+    if(user){
+    fetchDashboardData()}
+  },[user])
 
   return !loading ?(
 <>
@@ -89,7 +108,7 @@ const Dashboard = () => {
 >
   {/* Poster Image */}
   <img
-    src={show.movie.backdrop_path}
+    src={image_base_url + show.movie.poster_path}
     alt={show.movie.title}
     className="w-full h-52 rounded-lg cursor-pointer object-cover object-center"
   />

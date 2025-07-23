@@ -2,10 +2,12 @@ import { ArrowRight } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
 import BlurCircle from './BlurCircle'
 import MovieCard from './MovieCard'
-import { dummyShowsData } from '../assets/assets'
+import { useAppContext } from '../Context/AppContext'
 
 const FeaturedSection = () => {
     const navigate=useNavigate()
+
+    const {shows}=useAppContext()
   return (
     <div className='px-6 md:px-16 lg:px-24 xl:px-44 overflow-hidden'>
 
@@ -17,8 +19,8 @@ const FeaturedSection = () => {
                 View All <ArrowRight className='group-hover:translate-x-0.5 transition w-4.5 h-4.5'/></button> 
         </div>
         <div className='flex flex-wrap max-sm:justify-centre gap-8 mt-8'>
-          {dummyShowsData.slice(0,6).map((show)=>(
-           <MovieCard key={show._id} movie={show}/>
+          {shows.slice(0,6).map((show)=>(
+           <MovieCard key={show._id} movie={show.movie}/>
           ))}
           </div>
 

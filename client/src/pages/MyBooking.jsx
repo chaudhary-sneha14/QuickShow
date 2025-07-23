@@ -4,6 +4,7 @@ import Loading from '../Component/Loading';
 import BlurCircle from '../Component/BlurCircle';
 import timeFormat from '../lib/timeFormat';
 import { dateFormat } from '../lib/dateFormat';
+import { useAppContext } from '../Context/AppContext';
 
 const MyBooking = () => {
   const currency= import.meta.env.VITE_CURRENCY
@@ -11,15 +12,31 @@ const MyBooking = () => {
   const[bookings,setBookings]=useState([])
   const[isLoading,setIsLoading]=useState(true);
 
+    const {axios,getToken,user,image_base_url}=useAppContext()
+  
+
 
   const getMyBooking = async()=>{
-    setBookings(dummyBookingData);
+    try {
+      const {data}= await axios.get("/api/user/bookings",{headers:{Authorization:`Bearer ${await getToken()}`}})
+      console.log(data);
+      console.log("booking",data.booking);
+      
+      if(data.success){
+        setBookings(data.booking)      
+      }
+    } catch (error) {
+      console.log(error);
+      
+    }
     setIsLoading(false)
   }
 
   useEffect(()=>{
+    if(user){
     getMyBooking()
-  },[])
+    }
+  },[user])
 
   return !isLoading  ?(
     <div className='relative px-6 md:px-16 lg:px-40 pt-30 md:pt-40 min-h-[80vh]'>
@@ -30,11 +47,11 @@ const MyBooking = () => {
 
       <h1 className='text-lg font-semibold mb-4'>My Booking</h1>
 
-      {bookings.map((item,index)=>(
+      {bookings.length>0 && bookings.map((item,index)=>(
           <div key={index} className='
           flex flex-col md:flex-row justify-between bg-primary/8 border border-primary/20 rounded-lg mt-4 p-2 max-w-3xl'>
             <div className='flex flex-col md:flex-row'>
-              <img src={item.show.movie.poster_path} alt=""
+              <img src={image_base_url + item.show.movie.poster_path} alt=""
               className='md:max-w-45 aspect-video h-auto object-cover object-bottom rounded' />
               <div className=' flex flex-col p-4'>
                 <p className='text-lg font-semibold'>{item.show.movie.title}</p>
