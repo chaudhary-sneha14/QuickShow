@@ -5,6 +5,7 @@ import BlurCircle from '../Component/BlurCircle';
 import timeFormat from '../lib/timeFormat';
 import { dateFormat } from '../lib/dateFormat';
 import { useAppContext } from '../Context/AppContext';
+import { Link } from 'react-router-dom';
 
 const MyBooking = () => {
   const currency= import.meta.env.VITE_CURRENCY
@@ -63,13 +64,13 @@ const MyBooking = () => {
             <div className='flex flex-col md:items-end md:text-right justify-between p-4'>
               <div className='flex items-center gap-4'>
                 <p className='text-2xl font-semibold mb-3'>{currency}{item.amount}</p>
-                {!item.isPaid && <button className='flex items-center  mb-3 gap-2 px-7 py-3 text-sm bg-primary 
+                {!item.isPaid && <Link to={item.paymentLink} className='flex items-center  mb-3 gap-2 px-7 py-3 text-sm bg-primary 
             hover:bg-primary-dull transition rounded-full font-medium cursor-pointer active:scale-95'>
-                  Pay Now</button>}
+                  Pay Now</Link >}
               </div>
               <div className='text-sm'>
                 <p><span className='text-gray-400'>Total Tickets:</span>{item.bookedSeats.length}</p>
-                {/* <p><span className='text-gray-400'>Seat Number:</span>{item.bookedSeats.join(",")}</p> */}
+                <p><span className='text-gray-400'>Seat Number:</span>{item.bookedSeats.join(",")}</p> 
             </div>
             </div>
           </div>
