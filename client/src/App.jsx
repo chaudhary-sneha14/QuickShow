@@ -1,6 +1,6 @@
 import { Route, Routes, useLocation } from "react-router-dom"
 import Navbar from "./Component/Navbar"
-import Home from "./pages/home"
+import Home from "./pages/Home"
 import Movie from "./pages/Movie"
 import MovieDetails from "./pages/MovieDetails"
 import MyBooking from "./pages/MyBooking"
