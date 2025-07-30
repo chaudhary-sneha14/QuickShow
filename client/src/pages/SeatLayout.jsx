@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
-import { assets, dummyDateTimeData, dummyShowsData } from '../assets/assets'
+import { assets } from '../assets/assets'
 import Loading from '../Component/Loading'
 import { ArrowRightIcon, ClockIcon } from 'lucide-react'
 import isoTimeFormat from '../lib/isoTimeFormat'
@@ -48,7 +48,7 @@ const handleSeatClick = (seatId)=>{
     return toast("You can select 5 seats")
   }
 
-  if(occupiedSeats .includes(seatId)){
+  if(occupiedSeats.includes(seatId)){
     return toast('This seat is already booked')
   }
 
@@ -56,8 +56,7 @@ const handleSeatClick = (seatId)=>{
 }
 
 
-  const renderSeats=(row,count=8)=>{
-    return(
+  const renderSeats=(row,count=8)=>(
     <div key={row} className='flex gap-2 mt-2'>
       <div className='flex flex-wrap items-center justify-center gap-2'>
        {Array.from({ length: count }, (_, i) => {
@@ -70,9 +69,9 @@ const handleSeatClick = (seatId)=>{
       key={seatId}
       onClick={() => handleSeatClick(seatId)}
       disabled={isOccupied}
-      className={`h-8 w-8 rounded border border-primary/60 transition
-        ${isOccupied ? "bg-amber-400 opacity-50 cursor-not-allowed" : ""}
-        ${isSelected && !isOccupied ? "bg-primary text-white" : ""}
+      className={`h-8 w-8 rounded border border-primary/60 transition cursor-pointer
+        ${isOccupied &&  "opacity-50 cursor-not-allowed"}
+        ${isSelected && "bg-primary text-white"}
       `}
     >
       {seatId}
@@ -82,13 +81,16 @@ const handleSeatClick = (seatId)=>{
 
       </div>
     </div>
-    )}
+    )
+
+    console.log(selectedTime);
+    
 
     const getOccupiedSeats = async()=>{
       try {
      const {data}= await axios.get(`/api/booking/seats/${selectedTime.showId}`)
-     console.log("Occupied seats received:", data.occupiedSeats); 
-        if(data.success && data.occupiedSeats){
+     console.log("Occupied seats received:", data); 
+        if(data.success){
           setoccupiedSeats(data.occupiedSeats)
         }
         else{
@@ -106,7 +108,7 @@ const handleSeatClick = (seatId)=>{
         
         if(!user) return toast.error("Please Login to proceed")
 
-          if(!selectedSeat || !selectedSeat.length) return toast.error('Please select a time and seats')
+          if(!selectedTime || !selectedSeat.length) return toast.error('Please select a time and seats')
 
             const {data}= await axios.post('/api/booking/create',{showId:selectedTime.showId,selectedSeat},
               {headers:{Authorization:`Bearer ${await getToken()}`}}
@@ -126,14 +128,14 @@ const handleSeatClick = (seatId)=>{
 
   useEffect(()=>{getShow()},[])
 
-  useEffect(()=>{
-    if(selectedTime){
-      getOccupiedSeats()
-    }
-  },[selectedTime])
+ useEffect(() => {
+  if (selectedTime?.showId) {
+    getOccupiedSeats();
+  }
+}, [selectedTime]);
 
   return show? (
-    <div className='flex flex-co md:flex-row px-6 md:px-16 lg:px-40 py-30 md:pt-50'>
+    <div className='flex flex-col md:flex-row px-6 md:px-16 lg:px-40 py-30 md:pt-50'>
       {/* Availabel Timing */}
 
       <div className='w-60 bg-primary/10 border border-primary/20 rounded-lg py-10 h-max md:sticky md:top-30'>
@@ -153,10 +155,10 @@ const handleSeatClick = (seatId)=>{
 
       {/* Seat Layout  */}
       <div className='relative flex-1 flex flex-col items-center max-md:mt-16'>
-        <BlurCircle top='-100px' left='100px'/>
+        <BlurCircle top='-100px' left='-100px'/>
         <BlurCircle top='0' right='0'/>
         <h1 className='text-2xl font-semibold mb-4'>Select your seat</h1>
-        <img src={assets.screenImage} alt="" />
+        <img src={assets.screenImage} alt="screen" />
         <p className='text-gray-400 text-sm mb-6'>SCREEN SIDE</p>
 
 

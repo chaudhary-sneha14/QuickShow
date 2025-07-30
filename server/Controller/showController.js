@@ -120,6 +120,8 @@ export const getShows = async(req,res)=>{
 
     // const uniqueShows = Array.from(uniqueShowMap.values());
 
+    // const uniqueShows = new Set(shows.map(show=>show.movie))
+
     res.json({ success: true, shows});
         
     } catch (error) {
@@ -160,6 +162,9 @@ export const getShow = async (req, res) => {
         showId: show._id
       });
     });
+
+    console.log("Shows grouped by date:");
+console.log(dateTime);
 
     // 4. Send structured response
     res.json({ success: true, movie, dateTime });

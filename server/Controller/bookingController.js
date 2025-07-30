@@ -31,7 +31,7 @@ export const createBooking = async(req,res)=>{
         const{showId,selectedSeat}=req.body;
         const{origin}=req.headers;
 
-        //check seat availabel for selecter row
+        //check seat availabel for selecter show
         const isAvailabel = await checkSeatsAvailability(showId,selectedSeat)
 
         if(!isAvailabel){
@@ -109,19 +109,17 @@ await inngest.send({
 }
 
 
-export const getOccupiedSeats = async(req,res)=>{
-
-    try {
-
-        const {showId}= req.params;
-        const showData = await Show.findById(showId);
-
-        const occupiedSeats =Object.keys(showData.occupiedSeats || {} )
-        res.json({success:true,occupiedSeats  })
+export const getOccupiedSeats = async (req, res) => {
+  try {
+    const { showId } = req.params;
+  const showData = await Show.findById(showId);
 
 
-    } catch (error) {
-          console.log(error);
-        res.json({success:false,message:error.message})
-    }
-}
+    const occupiedSeats = Object.keys(showData.occupiedSeats);
+    res.json({ success: true, occupiedSeats });
+
+  } catch (error) {
+    console.log(error);
+    res.json({ success: false, message: error.message });
+  }
+};

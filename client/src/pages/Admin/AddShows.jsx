@@ -122,14 +122,13 @@ const AddShows = () => {
             className="flex flex-col justify-between bg-primary/10 rounded-2xl hover:-translate-y-1 transition duration-300 w-56 cursor-pointer"
           >
             {/* Image with Check Icon */}
-            <div className="relative w-full">
-              <img
-                src={image_base_url + movie.poster_path}
-                // onClick={setSelectedMovies(movie._id)}
-                alt={movie.title}
-                className="w-full h-52 rounded-t-2xl object-cover object-center"
-              />
-            </div>
+           <div className="aspect-[3/4] w-full rounded-t-2xl overflow-hidden">
+  <img
+    src={image_base_url + movie.poster_path}
+    alt={movie.title}
+    className="w-full h-full object-cover object-center"
+  />
+</div>
 
             {/* Title & Release Date */}
             <div className="p-2">

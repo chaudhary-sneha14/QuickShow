@@ -10,9 +10,9 @@ const MovieCard = ({movie}) => {
     const navigate=useNavigate()
   return (
     <div className='flex flex-col justify-between p-3 bg-gray-800 rounded-2xl 
-    hover:-translate-y-1 transition-duration-300 w-66'>
+    hover:-translate-y-1 transition duration-300 w-66'>
       <img onClick={()=>{navigate(`/movies/${movie._id}`);scrollTo(0,0)}}
-      src={image_base_url + movie.backdrop_path} alt=""  className='w-full h-52 rounded-lg cursor-pointer object-right-bottom object-cover'/>
+      src={image_base_url + movie.backdrop_path} alt=""  className="w-full h-44 rounded-lg cursor-pointer object-cover object-center"/>
 
       <p className='font-semibold mt-2 truncate'>{movie.title}</p>
 
@@ -22,7 +22,7 @@ const MovieCard = ({movie}) => {
 
       <div className='flex items-center justify-between mt-4 pb-3'>
         <button onClick={()=>{navigate(`/movies/${movie._id}`),scrollTo(0,0)}}
-        className="bg-primary hover:bg-primary-dull text-white text-sm px-4 py-2 rounded-full">
+        className="bg-primary hover:bg-primary-dull text-white text-sm px-4 py-2 font-medium cursor-pointer transition rounded-full">
             Buy Tickets
           </button>
         <p className='flex items-center gap-1 text-sm text-gray-400 mt-1 pr-1'>

@@ -5,9 +5,8 @@ import {
   StarIcon,
   UserIcon
 } from 'lucide-react'
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import Loading from '../../Component/Loading'
-import { dummyBookingData, dummyDashboardData } from '../../assets/assets'
 import Title from './Title'
 import BlurCircle from '../../Component/BlurCircle'
 import timeFormat from '../../lib/timeFormat'
@@ -107,11 +106,13 @@ const Dashboard = () => {
   className="flex flex-col justify-between p-3 bg-primary/10 rounded-2xl hover:-translate-y-1 transition duration-300 w-60"
 >
   {/* Poster Image */}
+  <div className="aspect-[2/3] w-full rounded-lg overflow-hidden cursor-pointer">
   <img
     src={image_base_url + show.movie.poster_path}
     alt={show.movie.title}
-    className="w-full h-52 rounded-lg cursor-pointer object-cover object-center"
+    className="w-full h-full object-cover object-center"
   />
+</div>
 
   {/* Movie Title */}
   <p className="font-semibold mt-2 text-white truncate">

@@ -17,7 +17,7 @@ const port=3000;
 connectDB()
 
 //stripe webhook route
-app.post('/api/stripe',express.raw({type:'application/json'}),stripeWebhooks)
+app.use('/api/stripe',express.raw({type:'application/json'}),stripeWebhooks)
 
 //middleware
 app.use(express.json())

@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
 import {useNavigate, useParams} from 'react-router-dom'
-import { dummyDateTimeData, dummyShowsData } from '../assets/assets';
 import BlurCircle from '../Component/BlurCircle';
 import { Heart, PlayCircleIcon, StarIcon } from 'lucide-react';
 import timeFormat from '../lib/timeFormat';
@@ -26,10 +25,11 @@ const MovieDetails = () => {
       console.log(data);
       
       if(data.success){
-        setShow( {
-            movie: data.movie,
-        dateTime: data.dateTime
-      })
+      //   setShow( {
+      //       movie: data.movie,
+      //   dateTime: data.dateTime
+      // })
+      setShow(data)
       }
       else{
         toast.error(data.message)
