@@ -77,6 +77,7 @@ QuickShow/
 │── .env
 
 🔧 Installation & Setup
+
 1️⃣ Clone the Repository
 git clone https://github.com/chaudhary-sneha14/QuickShow.git
 cd QuickShow
