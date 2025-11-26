@@ -8,11 +8,14 @@ QuickShow provides a smooth, modern, and responsive UI inspired by real movie-bo
 
 📸 Screenshots
 🏠 Home Page
-<img src="https://github.com/user-attachments/assets/64345100-590e-451f-af0c-e07f107c12d5" width="800"/>
+<img width="1888" height="888" alt="Screenshot 2025-11-26 155620" src="https://github.com/user-attachments/assets/d88d98c2-0087-4ceb-9259-93f30e17390e" />
 🎥 Movie Details Page
-<img src="https://github.com/user-attachments/assets/bbb337f0-59f8-40ac-8ba3-0b01ee9bd104" width="800"/>
+<img width="1866" height="882" alt="Screenshot 2025-11-26 155932" src="https://github.com/user-attachments/assets/b3d22f51-efe4-4206-a3e0-1dbf74e4df46" />
 🎟 Seat Selection Page
-<img src="https://github.com/user-attachments/assets/569ecda1-edc8-4944-8740-609122918eef" width="800"/>
+<img width="1900" height="892" alt="Screenshot 2025-11-26 160000" src="https://github.com/user-attachments/assets/fc60a279-2dd5-460a-a84c-685f122cc8b6" />
+Login page
+<img width="1031" height="836" alt="image" src="https://github.com/user-attachments/assets/96f1c54d-737a-4af4-8263-065e3e6f4576" />
+
 🚀 Features
 👤 User Features
 
